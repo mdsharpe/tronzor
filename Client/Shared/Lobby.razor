@@ -1,0 +1,34 @@
+@inject IGameStateService GameState
+
+@if (GameState.Current == null)
+{
+    <form>
+        <input type="button" value="New game" @onclick="@NewGame" />
+        <input type="text" @bind="@joinGameKey" />
+        <input type="button" value="Join game" @onclick="@JoinGame" />
+    </form>
+}
+else
+{
+    <h1>@GameState.Current.Key</h1>
+    <form>
+        <input type="button" value="Quit" @onclick="@QuitGame" />
+    </form>
+}
+
+@code {
+    string joinGameKey;
+
+    async Task NewGame()
+    {
+        await GameState.Create(CancellationToken.None);
+    }
+
+    async Task JoinGame() {
+        await GameState.Join(joinGameKey, CancellationToken.None);
+    }
+
+    async Task QuitGame() {
+        await GameState.Leave(CancellationToken.None);
+    }
+}
