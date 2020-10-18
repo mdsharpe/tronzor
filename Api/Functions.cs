@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
+using Microsoft.Extensions.Logging;
 
 namespace Api
 {
@@ -27,6 +29,14 @@ namespace Api
                     Target = "newMessage",
                     Arguments = new[] { message }
                 });
+        }
+
+        [FunctionName("HelloWorldFunction")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            return new OkObjectResult("Hello world!");
         }
     }
 }
