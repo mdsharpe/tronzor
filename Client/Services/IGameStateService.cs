@@ -2,8 +2,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Model;
 
-namespace Client{
-    public interface IGameStateService {
+namespace Client.Services
+{
+    public interface IGameStateService
+    {
         GameState Current { get; }
 
         Task Create(CancellationToken cancellationToken);

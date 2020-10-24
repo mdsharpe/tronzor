@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Model;
 using Model.Services;
 
-namespace Client
+namespace Client.Services
 {
     public class GameStateService : IGameStateService
     {

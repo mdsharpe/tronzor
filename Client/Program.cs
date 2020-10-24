@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Client.Services;
 using Model.Services;
 
 namespace Client
@@ -18,8 +19,6 @@ namespace Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            ////builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
@@ -27,8 +26,17 @@ namespace Client
                 options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
             });
 
-            builder.Services.AddTransient<IGameKeyFactory, GameKeyFactory>();
-            builder.Services.AddSingleton<IGameStateService, GameStateService>();
+            builder.Services
+                .AddSingleton<IGameApiService, GameApiService>()
+                .AddTransient<IGameKeyFactory, GameKeyFactory>()
+                .AddSingleton<IGameStateService, GameStateService>();
+
+            ////builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient<IGameApiService, GameApiService>()
+                .ConfigureHttpClient(o => {
+                    Console.WriteLine(builder.Configuration["ApiRootUri"]);
+                    o.BaseAddress = new Uri(builder.Configuration["ApiRootUri"]);
+                });
 
             await builder.Build().RunAsync();
         }

@@ -1,4 +1,7 @@
 @inject IGameStateService GameState
+@inject IGameApiService Api
+
+<span>@helloWorld</span>
 
 @if (GameState.Current == null)
 {
@@ -18,6 +21,12 @@ else
 
 @code {
     string joinGameKey;
+    string helloWorld;
+
+    protected override async Task OnInitializedAsync()
+    {
+        helloWorld = await Api.GetHelloWorld(CancellationToken.None);
+    }
 
     async Task NewGame()
     {
