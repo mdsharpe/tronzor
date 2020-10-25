@@ -34,7 +34,6 @@ namespace Client
             ////builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddHttpClient<IGameApiService, GameApiService>()
                 .ConfigureHttpClient(o => {
-                    Console.WriteLine(builder.Configuration["ApiRootUri"]);
                     o.BaseAddress = new Uri(builder.Configuration["ApiRootUri"]);
                 });
 
