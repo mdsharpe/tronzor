@@ -1,0 +1,2 @@
+>powershell -NoExit -cur_console:t:"Client" -Command "Set-Location .\Client; dotnet watch run";
+powershell -NoExit -cur_console:t:"API" -Command "Set-Location .\Api; func start";
